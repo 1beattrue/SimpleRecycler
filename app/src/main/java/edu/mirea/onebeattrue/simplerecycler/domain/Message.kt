@@ -1,6 +1,6 @@
 package edu.mirea.onebeattrue.simplerecycler.domain
 
-class Message(
+data class Message(
     val text: String,
     val time: String,
     var id: Int = DEFAULT_ID

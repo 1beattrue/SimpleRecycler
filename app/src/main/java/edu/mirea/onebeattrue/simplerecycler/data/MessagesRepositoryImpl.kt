@@ -8,20 +8,21 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 object MessagesRepositoryImpl : MessagesRepository {
-    private val messages = mutableListOf<Message>().sortedBy { it.id }.toMutableList()
+    private val messages = sortedSetOf<Message>({ p0, p1 -> p0.id.compareTo(p1.id) })
     private val messagesLiveData = MutableLiveData<List<Message>>()
 
-    private var id = 0
+    private var incrementId = 0
 
     init {
         for (i in 0 until 100) {
             messages.add(
                 Message(
-                    text = "Message ${id++}", time = LocalDateTime.now().format(
-                        DateTimeFormatter.ofPattern("hh:mm")
-                    )
+                    "Message ${incrementId++}",
+                    "${LocalDateTime.now().hour}:${LocalDateTime.now().minute}",
+                    incrementId
                 )
             )
+            println(messages.toList())
         }
     }
 

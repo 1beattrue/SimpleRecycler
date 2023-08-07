@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import edu.mirea.onebeattrue.simplerecycler.R
 import edu.mirea.onebeattrue.simplerecycler.domain.Message
@@ -12,8 +13,10 @@ class MessagesAdapter: RecyclerView.Adapter<MessagesAdapter.MessageHolder>() {
 
     var messages = listOf<Message>()
         set(value) {
+            val callback = MessagesDiffCallback(messages, value)
+            val diffResult = DiffUtil.calculateDiff(callback)
+            diffResult.dispatchUpdatesTo(this)
             field = value
-            notifyDataSetChanged()
         }
 
     class MessageHolder(view: View) : RecyclerView.ViewHolder(view) {
