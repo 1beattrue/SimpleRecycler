@@ -8,16 +8,26 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 object MessagesRepositoryImpl : MessagesRepository {
-    private val messages = mutableListOf<Message>()
+    private val messages = mutableListOf<Message>().sortedBy { it.id }.toMutableList()
     private val messagesLiveData = MutableLiveData<List<Message>>()
 
     private var id = 0
 
     init {
         for (i in 0 until 100) {
-            messages.add(Message(text = "Message ${id++}", time = LocalDateTime.now().format(
-                DateTimeFormatter.ofPattern("hh:mm"))))
+            messages.add(
+                Message(
+                    text = "Message ${id++}", time = LocalDateTime.now().format(
+                        DateTimeFormatter.ofPattern("hh:mm")
+                    )
+                )
+            )
         }
+    }
+
+    override fun deleteMessage(message: Message) {
+        messages.remove(message)
+        updateList()
     }
 
     override fun getMessages(): LiveData<List<Message>> {
@@ -26,6 +36,7 @@ object MessagesRepositoryImpl : MessagesRepository {
     }
 
     private fun updateList() {
-        messagesLiveData.value = messages
+        println(messages.toList())
+        messagesLiveData.value = messages.toList()
     }
 }

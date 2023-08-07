@@ -11,6 +11,10 @@ import edu.mirea.onebeattrue.simplerecycler.domain.Message
 class MessagesAdapter: RecyclerView.Adapter<MessagesAdapter.MessageHolder>() {
 
     var messages = listOf<Message>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     class MessageHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textTV: TextView = view.findViewById(R.id.textTV)
